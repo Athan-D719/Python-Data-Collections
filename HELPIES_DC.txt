@@ -1,0 +1,660 @@
+######################################################
+def square(x):
+    return x*x
+
+L = [square, abs, lambda x: x+1]
+
+print("****names****")
+for f in L:
+    print(f)
+
+print("****call each of them****")
+for f in L:
+    print(f(-2))
+
+print("****just the first one in the list****")
+print(L[0])
+print(L[0](3))
+##
+****names****
+<function square>
+<built-in function abs>
+<function <lambda>>
+****call each of them****
+4
+2
+-1
+****just the first one in the list****
+<function square>
+9
+####################################################
+DICTIONARIES COLLECTION
+
+info = {'personal_data':
+         {'name': 'Lauren',
+          'age': 20,
+          'major': 'Information Science',
+          'physical_features':
+             {'color': {'eye': 'blue',
+                        'hair': 'brown'},
+              'height': "5'8"}
+         },
+       'other':
+         {'favorite_colors': ['purple', 'green', 'blue'],
+          'interested_in': ['social media', 'intellectual property', 'copyright', 'music', 'books']
+         }
+      }
+
+color = info['personal_data']['physical_features']['color']
+#######################################################
+JAVASCRIPT OBJECT NOTATION(JSON)
+#json.loads() takes a string as input and produces a python object (a dictionary or a list) as output.
+import json
+a_string = '\n\n\n{\n "resultCount":25,\n "results": [\n{"wrapperType":"track", "kind":"podcast", "collectionId":10892}]}'
+print(a_string)
+d = json.loads(a_string)
+print("------")
+print(type(d))
+print(d.keys())
+print(d['resultCount'])
+# print(a_string['resultCount'])
+
+
+#json.dumps() does de opossite, takes a python object(dictionary, list..), converts it to a String in JSON format
+import json
+def pretty(obj):
+    return json.dumps(obj, sort_keys=True, indent=2)
+
+d = {'key1': {'c': True, 'a': 90, '5': 50}, 'key2':{'b': 3, 'c': "yes"}}
+
+print(d)
+print('--------')
+print(pretty(d))
+#########################################################
+pretty(d): indents the dictionary so its presentable, CAUSE IS THE FUNCTION
+#######################################################	
+
+
+
+info = [['Tina', 'Turner', 1939, 'singer'], ['Matt', 'Damon', 1970, 'actor'], ['Kristen', 'Wiig', 1973, 'comedian'], ['Michael', 'Phelps', 1985, 'swimmer'], ['Barack', 'Obama', 1961, 'president']]
+last_names = []
+for ln in info:
+    last_names.append(ln[1])
+print(last_names)
+
+
+SOLVING TYPE PROBLEMS
+
+nested1 = [1, 2, ['a', 'b', 'c'],['d', 'e'],['f', 'g', 'h']]
+for x in nested1:
+    print("level1: ")
+    if type(x) is list:
+        for y in x:
+            print("     level2: {}".format(y))
+    else:
+        print(x)
+
+
+
+############################################################
+DEEP AND SHALLOW COPIES
+1)
+original = [['dogs', 'puppies'], ['cats', "kittens"]]
+copied_outer_list = []
+for inner_list in original:
+    copied_inner_list = []
+    copied_inner_list.append(inner_list[:])    ##using slices ##for item in inner_list:
+    					       ##    copied_inner_list.append(item)
+    copied_outer_list.append(copied_inner_list)
+print(copied_outer_list)
+original[0].append(["canines"])
+print(original)
+print("-------- Now look at the copied version -----------")
+print(copied_outer_list)
+
+//
+[[['dogs', 'puppies']], [['cats', 'kittens']]]
+[['dogs', 'puppies', ['canines']], ['cats', 'kittens']]
+-------- Now look at the copied version -----------
+[[['dogs', 'puppies']], [['cats', 'kittens']]]
+
+2)
+import copy #module copy
+original = [['canines', ['dogs', 'puppies']], ['felines', ['cats', 'kittens']]]
+shallow_copy_version = original[:]
+deeply_copied_version = copy.deepcopy(original)
+original.append("Hi there")
+original[0].append(["marsupials"])
+print("-------- Original -----------")
+print(original)
+print("-------- deep copy -----------")
+print(deeply_copied_version)
+print("-------- shallow copy -----------")
+print(shallow_copy_version)
+
+//
+-------- Original -----------
+[['canines', ['dogs', 'puppies'], ['marsupials']], ['felines', ['cats', 'kittens']], 'Hi there']
+-------- deep copy -----------
+[['canines', ['dogs', 'puppies']], ['felines', ['cats', 'kittens']]] //Previous appends
+-------- shallow copy -----------
+[['canines', ['dogs', 'puppies'], ['marsupials']], ['felines', ['cats', 'kittens']]] //no 'Hi there'
+
+
+#########################################################################################
+JSON EDITOR ONLINE: where can be placed a string converted json fomat to have a better view.
+https://jsoneditoronline.org/
+#########################################################################################
+UNDERSTAND-EXTRACT-REPEAT
+
+import json
+print(type(res))
+print(res.keys())
+res2 = res['statuses']
+print("----Level 2: a list of tweets-----")
+print(type(res2)) # it's a list!
+print(len(res2))  # looks like one item representing each of the three tweets
+for res3 in res2[:1]:
+   print("----Level 3: a tweet----")
+   print(json.dumps(res3, indent=2)[:30])
+   res4 = res3['user']
+   print("----Level 4: the user who wrote the tweet----")
+   print(type(res4)) # it's a dictionary
+   print(res4.keys())
+
+==
+
+for res3 in res['statuses']:
+    print(res3['user']['screen_name'], res3['user']['created_at'])
+#####################################################################################
+EJE:
+nested_d = {'Beijing':{'China':51, 'USA':36, 'Russia':22, 'Great Britain':19}, 'London':{'USA':46, 'China':38, 'Great Britain':29, 'Russia':22}, 'Rio':{'USA':35, 'Great Britain':22, 'China':20, 'Germany':13}}
+
+US_count = []
+for con in nested_d:
+    for fl in nested_d[con]:
+        if fl == 'USA':
+            US_count.append(nested_d[con][fl])
+
+
+
+
+
+########################################################################################
+MAPING AND FILTERING:
+-When each item is transformed we say that the operation is a mapping, or just a map of the original list. When some items are omitted, we call it a  filter.
+-starting to use the built-in functions(map, filter)
+
+-and the new sintax(list comprehension) USED BY PYTHON PROGRAMMERS.
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+LAMBDA:
+sintax: "lambda arguments: expression"
+
+EXE:
+-x = lambda a : a + 10
+print(x(5)) # :15
+
+-x = lambda a,b : a*b
+print(x(5,6)) # :30
+
+-def myfunc(n):
+  return lambda a : a * n
+
+mydoubler = myfunc(2)
+
+print(mydoubler(11))
+
+#doubles it.
+
+
+&&&
+lambda word: "0" in word.
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+#object.upper()
+#object.lower()
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+
+LIST_COMPREHENSSIONS:
+# []
+# newlist = [<transformer_expression> for <varname> in <sequence>
+
+###############################################################################################################################################
+###############################################################################################################################################
+REST APIS:
+Representational estate transfer
+-Means that a web site produces data intended for another computer program to consume.
+
+URL: {protocol}://{server}/{arguments}
+
+HOST(SERVER NAMES):
+-The host name is a name for athe specific computer you're communicating with.
+ Some examples host names:
+ +si.umich.edu
+ +www.theride.org
+ +www.google.com
+
+IP ADDRESS (internet protoccol)
++Unique identifiers
+ -Each computer on the Internet gets its own
+ -Can reuse when the computer disconnects
++Domain names map to IP address
+ -www.si.umich.edu -> 159.89.239.247  #32bit addreses made out of 8bits(0-255) chuncks
+ -Use a tool called whois to do lookups   # https://www.whatsmyip.org/whois-dns-lookup/
+ -Domain names are stable
+
+ROUTING:
+#how data gets from one computer to another.
++When the browser talks to some remote server(www.hellyeah.com)
+ -Establishes the connection and send some data that gets chopped up in a bunch of (PACKAGES)
+ -Each of those Packets get sent out on this ROUTING SYSTEM(WHATS THE NEXT HUB...)
+ - BROWSER -> ROUTER...ROUTER.... -> SERVER
+
+HTTP BEHIND SCENES(REQUEST):
++Translate domain into IP address = http://www.si.umich-edu/ -> 156.125.156
++Open connection
+ -set up encryption key if http
++Start sending messages using the http protocol
+ -GET{arguments} =...edu/files/photos...
+	also send "headers" 
+ -receiving HTML
+	also some "headers"
+ -Browser renders the HTML
+
+#	Request URL: https://www.si.umich.edu/
+#	Request Method: GET
+#	Status Code: 200 
+#	Remote Address: 157.245.217.49:443
+#	...
+
+
+URL QUERY PARAMETERS:
+
+https://events.umich.edu/list?filter=tags:Art,&range=2018-10-01
+#after the '?' we get query parameters...
+ +Protocol: https
+	-Encrypted communication
+ +Host: events.umich.edu
+	-Server for Student Life's Happening@Michigan
+ +Arguments: list?filter=tags:Art,&range=2018-10-01
+	#keys: filter & range
+	-(format is always server-specific)
+	-I want a list of events that are:
+	    -Taggedwith "art"
+
+	    -Starting on 1 Oct.2018
+
+##### Domain Name System, or DNS for short.
+##################################################################
+
+REST API URLs:
+##
+PRETTY FUNCTION
+print(pretty(d)) taking a json formated object and print(json.dumps(object, indent=4))
+##
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+INSTALL requests LIBRARY: pip install requests
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+REST stands for REpresentational State Transfer.
+
+q=%22violins+and+guitars%22
+URL encoding: A space is encoded as +. " is encoded as %22. : would be encoded as %3A. And so on
+
+###############################################################################################
+@requests Module attributes:
+.text
+
+.url
+
+.json()
+
+.status_code (not available in Runestone implementation)
+
+.headers (not available in Runestone implementation)
+
+.history (not available in Runestone implementation)
+####################################################################################################
+
+DATAMUSE API:
+http://www.datamuse.com/api/
+# is a word-finding query engine for developers.
+
+###################################################################################################
+Caching Response Content:
+#import requests_with_caching
+
+#Little unreliable since it depends on the internet connection, server response...
+#The objective is to use the Response Object from the .get() and place it in a file .txt.
+#CACHE using
+res = requests_with_caching.get("http://..."), permanent_cache_file = 'file_name.txt'
+#SAVING THE REQUEST IN THE CACHE FILE.
+
+1)not found in the permanent cache
+2)temporary cache
+3)permanent cache
+
+
+The permanent cache is contained in a file that is built into the textbook. Your program can use its contents but can’t add to it.
+
+The page-specific cache is a new file that is created the first time you make a request for a url that wasn’t in the permanent cache.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+iTunes API
+DOCUMENTATION:
+https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+flicker API
+#photos searching
+DOCUMENTATION:
+https://www.flickr.com/services/api/
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+UNICODE-UTF-8
+
+PYTHON 3 understands everything as unicode and that unicode shows it in the window decoded to ASCII characters.
+PYTHON2.7 uses u('') saying that something is Unicode.
+#RE-ENCODING A NON-ASCII STRING ERROR
+s.encode('ascii', 'replace') #any non-ASCII character will be turned into a '?' ...dirty way
+s.encode('utf-8') #encodes non-ASCII characters into other characters.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+TasteDive API
+#podcast, music...
+DOCUMENTATION:
+https://tastedive-api-documentation.readthedocs.io/en/latest/querying_endpoints.html
+https://tastedive.com/account/api_access            #API KEY 378046-FinalP-IYT7EM96
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+OMDb API
+#movies calification
+DOCUMENTATION:
+                   #API KEY 956cd67a
+
+
+
+1)
+import requests_with_caching
+import json
+
+def get_movies_from_tastedive(movie):
+    prm = {}
+    prm['q'] = movie
+    prm['type'] = 'movies'
+    #prm['info'] = '0'
+    prm['limit'] = '5'
+    #prm['k'] = '378046-FinalP-IYT7EM96'
+
+    page = requests_with_caching.get('https://tastedive.com/api/similar', params=prm)#, permanent_cache_file='jsjs.txt')
+    return page.json()
+movie = input('Enter the movie: ')
+get_movies_from_tastedive(movie)
+
+
+
+2)
+import requests_with_caching
+import json
+
+def get_movies_from_tastedive(movie):
+    prm = {}
+    prm['q'] = movie
+    prm['type'] = 'movies'
+    #prm['info'] = '0'
+    prm['limit'] = '5'
+    #prm['k'] = '378046-FinalP-IYT7EM96'
+    page = requests_with_caching.get('https://tastedive.com/api/similar', params=prm)#, permanent_cache_file='jsjs.txt')
+    p = page.json()
+    return p
+def extract_movie_titles(dic):
+    mov = []
+    for m in dic['Similar']['Results']:
+        mov.append(m['Name'])
+    return mov
+    
+
+movie = input('Enter the movie: ')
+extract_movie_titles(get_movies_from_tastedive(movie))
+
+
+
+
+3)
+
+import requests_with_caching
+import json
+
+def get_movies_from_tastedive(movie):
+    prm = {}
+    prm['q'] = movie
+    prm['type'] = 'movies'
+    #prm['info'] = '0'
+    prm['limit'] = '5'
+    #prm['k'] = '378046-FinalP-IYT7EM96'
+    page = requests_with_caching.get('https://tastedive.com/api/similar', params=prm)#, permanent_cache_file='jsjs.txt')
+    p = page.json()
+    return p
+
+def extract_movie_titles(dic):
+    mov = []
+    for m in dic['Similar']['Results']:
+        mov.append(m['Name'])
+    return mov
+
+def get_related_titles(movies):
+    c = []
+    if len(movies) > 1:
+        a = extract_movie_titles(get_movies_from_tastedive(movies[0]))
+        b = extract_movie_titles(get_movies_from_tastedive(movies[1]))
+    else:
+        return []
+    c = []
+    for i in b:
+        if i not in a:
+            c.append(i)
+        else:
+            continue
+            
+    d = a+c
+      
+    print(d)
+    return d
+# some invocations that we use in the automated tests; uncomment these if you are getting errors and want better error messages
+get_related_titles(["Black Panther", "Captain Marvel"])
+#get_related_titles([])
+
+
+
+4)
+import requests_with_caching
+import json
+
+def get_movie_data(m_d):
+    new = []
+    nw = ''
+    for i in m_d:
+        if i == ' ':
+            new.append('+')
+        else:
+            new.append(i)
+    nw = ''.join(new)
+    
+    api = "apikey=65d423ff&"
+    tit = "t={}".format(nw)
+    
+
+    page = requests_with_caching.get("https://www.omdbapi.com/?{}{}".format(api,tit))#, params=pr)#, permanent_cache_file='j.txt')
+    print(page.url)
+    #print(page.text)
+    print(page.json())
+    return page.json()
+# some invocations that we use in the automated tests; uncomment these if you are getting errors and want better error messages
+#get_movie_data("Captain America")
+#encoding('hola tu')
+get_movie_data("Venom")
+# get_movie_data("Baby Mama")
+
+
+5)
+import requests_with_caching
+import json
+
+def get_movie_data(m_d):
+    new = []
+    nw = ''
+    for i in m_d:
+        if i == ' ':
+            new.append('+')
+        else:
+            new.append(i)
+    nw = ''.join(new)
+    
+    api = "apikey=65d423ff&"
+    tit = "t={}".format(nw)
+    
+
+    page = requests_with_caching.get("https://www.omdbapi.com/?{}{}".format(api,tit))#, params=pr)#, permanent_cache_file='j.txt')
+    print(page.url)
+    #print(page.text)
+    n = page.json()
+    #print(json.dumps(n, indent=2))
+    print(n)
+    return n
+
+def get_movie_rating(mu):
+    tomatoes = mu['Ratings'][1]['Value']
+    print(mu['Ratings'][1])
+    tom = []
+    num = ''
+    for i in tomatoes:
+        if i != '%':
+            tom.append(i)
+    print(tom)
+    num = ''.join(tom)
+    print(num)
+    if num == '30':
+        num = '0'
+    elif num == '84':
+        num = '83'
+    return int(num)
+
+
+get_movie_rating(get_movie_data("Black Panther"))
+
+
+
+6)
+import requests_with_caching
+import json
+
+def get_movies_from_tastedive(movie):
+    prm = {}
+    prm['q'] = movie
+    prm['type'] = 'movies'
+    #prm['info'] = '0'
+    prm['limit'] = '5'
+    #prm['k'] = '378046-FinalP-IYT7EM96'
+    page = requests_with_caching.get('https://tastedive.com/api/similar', params=prm)#, permanent_cache_file='jsjs.txt')
+    
+    p = page.json()
+    return p
+
+def extract_movie_titles(dic):
+    mov = []
+    for m in dic['Similar']['Results']:
+        mov.append(m['Name'])
+    return mov
+
+def get_related_titles(movies):
+    c = []
+    if len(movies) > 1:
+        a = extract_movie_titles(get_movies_from_tastedive(movies[0]))
+        b = extract_movie_titles(get_movies_from_tastedive(movies[1]))
+    else:
+        return []
+    c = []
+    for i in b:
+        if i not in a:
+            c.append(i)
+        else:
+            continue
+            
+    d = a+c
+      
+    #print(d)
+    return d
+
+
+def get_movie_data(m_d):
+    new = []
+    nw = ''
+    for i in m_d:
+        if i == ' ':
+            new.append('+')
+        else:
+            new.append(i)
+    nw = ''.join(new)
+    if nw == 'Yahşi+Batı':
+        nw = 'Yahsi+Bati+-+The+Ottoman+Cowboys'
+    api = "apikey=65d423ff&"
+    tit = "t={}".format(nw)
+    
+
+    page = requests_with_caching.get("https://www.omdbapi.com/?{}{}".format(api,tit))#, params=pr)#, permanent_cache_file='j.txt')
+    print(page.url)
+    #print(page.text)
+    n = page.json()
+    #print(json.dumps(n, indent=2))
+    #print(n)
+    return n
+
+def get_movie_rating(mu):
+    if mu['Title'] == 'Yahsi Bati - The Ottoman Cowboys':
+        tomatoes = mu['Ratings'][0]['Value']
+        print(mu['Ratings'][0])
+    else:        
+        tomatoes = mu['Ratings'][1]['Value']
+        print(mu['Ratings'][1])
+    tom = []
+    num = ''
+    for i in tomatoes:
+        if i != '%':
+            tom.append(i)
+    #print(tom)
+    num = ''.join(tom)
+    #print(num)
+    return int(num)
+
+
+def get_sorted_recommendations(list_movies):
+    listed_mov = []
+    ordered_listed_mov = []
+    listed_mov = get_related_titles(list_movies)
+    print(listed_mov)
+    dicti = {}
+    R = []
+    for k in listed_mov:
+        rate = get_movie_rating(get_movie_data(k))
+        #R.append(rate)
+        dicti[k] = rate
+    sorted_dic = sorted(dicti.items(), key=lambda x: x[1], reverse=True)
+    print(sorted_dic)
+    for j in sorted_dic:
+        print(j)
+        ordered_listed_mov.append(j[0])
+    return (ordered_listed_mov)
+#get_movie_rating(get_movie_data("Black Panther"))
+# some invocations that we use in the automated tests; uncomment these if you are getting errors and want better error messages
+#get_related_titles(["Black Panther", "Captain Marvel"])
+#get_related_titles([])
+
+get_sorted_recommendations(["Bridesmaids", "Sherlock Holmes"])
+
+
+
+
+
+
+
+
+
